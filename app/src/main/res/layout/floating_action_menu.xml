@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.github.clans.fab.FloatingActionMenu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/floatingLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="12dp"
+    android:gravity="bottom|end"
+    app:menu_icon="@drawable/ic_options">
+
+    <com.github.clans.fab.FloatingActionButton
+        android:id="@+id/fabFilterList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_filter_list"
+        app:fab_label="@string/filter_section"
+        app:fab_showShadow="true"
+        app:fab_size="mini" />
+
+    <com.github.clans.fab.FloatingActionButton
+        android:id="@+id/fabViral"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_include_viral"
+        app:fab_label="@string/include_viral"
+        app:fab_showShadow="true"
+        app:fab_size="mini" />
+
+    <com.github.clans.fab.FloatingActionButton
+        android:id="@+id/fabWindow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_window"
+        app:fab_label="@string/change_window"
+        app:fab_showShadow="true"
+        app:fab_size="mini" />
+
+    <com.github.clans.fab.FloatingActionButton
+        android:id="@+id/fabSortBy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_sort_by"
+        app:fab_label="@string/sort_by"
+        app:fab_showShadow="true"
+        app:fab_size="mini" />
+</com.github.clans.fab.FloatingActionMenu>
