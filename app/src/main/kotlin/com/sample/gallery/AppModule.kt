@@ -66,11 +66,6 @@ object AppModule {
 
     @Singleton
     @Provides
-    internal fun provideRepository(api: RetrofitService): GalleryRepositoryImpl =
-        GalleryRepositoryImpl(api)
-
-    @Singleton
-    @Provides
     internal fun provideApi(retrofit: Retrofit): RetrofitService =
         retrofit.create(RetrofitService::class.java)
 

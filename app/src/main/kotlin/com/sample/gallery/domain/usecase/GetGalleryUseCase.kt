@@ -2,9 +2,8 @@ package com.sample.gallery.domain.usecase
 
 import com.sample.gallery.domain.model.GalleryResponse
 import com.sample.gallery.domain.repository.GalleryRepository
-import javax.inject.Inject
 
-class GetGalleryUseCase @Inject constructor(
+class GetGalleryUseCase(
     private val galleryRepository: GalleryRepository
 ) {
 

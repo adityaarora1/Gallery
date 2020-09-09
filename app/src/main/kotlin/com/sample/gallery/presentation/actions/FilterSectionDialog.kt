@@ -5,13 +5,16 @@ import android.content.DialogInterface
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.activityViewModels
 
-class FilterSectionDialog(private val viewModel: FilterSectionViewModel) : DialogFragment() {
+class FilterSectionDialog: DialogFragment() {
+    private val filterSectionViewModel: FilterSectionViewModel by activityViewModels()
+
     private var positiveListener: DialogInterface.OnClickListener =
         DialogInterface.OnClickListener { dialog, which ->
             val alert: AlertDialog = dialog as AlertDialog
             val position: Int = alert.listView.checkedItemPosition
-            this.viewModel.setFilterPositionLiveData(position)
+            filterSectionViewModel.setFilterPositionLiveData(position)
         }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {

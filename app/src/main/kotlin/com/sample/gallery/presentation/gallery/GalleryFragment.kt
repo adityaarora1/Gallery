@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
@@ -39,10 +38,10 @@ class GalleryFragment : Fragment() {
     private lateinit var galleryAdapter: GalleryAdapter
 
     private val galleryViewModel: GalleryViewModel by activityViewModels()
-    private val sortByViewModel: SortByViewModel by viewModels()
-    private val filterSectionViewModel: FilterSectionViewModel by viewModels()
-    private val changeWindowViewModel: ChangeWindowViewModel by viewModels()
-    private val includeViralViewModel: IncludeViralViewModel by viewModels()
+    private val sortByViewModel: SortByViewModel by activityViewModels()
+    private val filterSectionViewModel: FilterSectionViewModel by activityViewModels()
+    private val changeWindowViewModel: ChangeWindowViewModel by activityViewModels()
+    private val includeViralViewModel: IncludeViralViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,64 +75,69 @@ class GalleryFragment : Fragment() {
 
         fabSortBy.setOnClickListener {
             floatingLayout.close(true)
-            sortByViewModel.showSortByDialog(childFragmentManager)
+            showSortByDialog()
         }
 
         fabWindow.setOnClickListener {
             floatingLayout.close(true)
-            changeWindowViewModel.showChangeWindowDialog(childFragmentManager)
+            showChangeWindowDialog()
         }
 
         fabFilterList.setOnClickListener {
             floatingLayout.close(true)
-            filterSectionViewModel.showFilterSectionDialog(childFragmentManager)
+            showFilterSectionDialog()
         }
 
         fabViral.setOnClickListener {
             floatingLayout.close(true)
-            includeViralViewModel.showIncludeViralDialog(childFragmentManager)
+            showIncludeViralDialog()
         }
 
         setupRecyclerView()
     }
 
     private fun setupObservers() {
-        galleryViewModel.getGalleryPagingData().observe(viewLifecycleOwner) { flow ->
-            lifecycleScope.launch {
-                flow.collectLatest {
-                    galleryAdapter.submitData(it)
+        galleryViewModel.getGalleryPagingData()
+            .observe(viewLifecycleOwner) { flow ->
+                lifecycleScope.launch {
+                    flow.collectLatest {
+                        galleryAdapter.submitData(it)
+                    }
                 }
             }
-        }
 
-        sortByViewModel.getSortPositionLiveData().observe(viewLifecycleOwner) { sortPosition ->
-            if (sortPosition != sortByViewModel.selectedSortByPosition) {
-                sortByViewModel.selectedSortByPosition = sortPosition
-                galleryViewModel.nowPlaying(sort = Actions.sortBy[sortPosition])
+        sortByViewModel.getSortPositionLiveData()
+            .observe(viewLifecycleOwner) { sortPosition ->
+                if (sortPosition != sortByViewModel.selectedSortByPosition) {
+                    sortByViewModel.selectedSortByPosition = sortPosition
+                    galleryViewModel.nowPlaying(sort = Actions.sortBy[sortPosition])
+                }
             }
-        }
 
-        filterSectionViewModel.getFilterPositionLiveData().observe(viewLifecycleOwner) { sectionPosition ->
-            if (sectionPosition != filterSectionViewModel.selectedSectionPosition) {
-                filterSectionViewModel.selectedSectionPosition = sectionPosition
-                galleryViewModel.nowPlaying(section = Actions.sections[sectionPosition])
+        filterSectionViewModel.getFilterPositionLiveData()
+            .observe(viewLifecycleOwner) { sectionPosition ->
+                if (sectionPosition != filterSectionViewModel.selectedSectionPosition) {
+                    filterSectionViewModel.selectedSectionPosition = sectionPosition
+                    galleryViewModel.nowPlaying(section = Actions.sections[sectionPosition])
+                }
             }
-        }
 
-        changeWindowViewModel.getWindowPositionLiveData().observe(viewLifecycleOwner) { windowPosition ->
-            if (windowPosition != changeWindowViewModel.selectedWindowPosition) {
-                changeWindowViewModel.selectedWindowPosition = windowPosition
-                galleryViewModel.nowPlaying(window = Actions.window[windowPosition])
+        changeWindowViewModel.getWindowPositionLiveData()
+            .observe(viewLifecycleOwner) { windowPosition ->
+                if (windowPosition != changeWindowViewModel.selectedWindowPosition) {
+                    changeWindowViewModel.selectedWindowPosition = windowPosition
+                    galleryViewModel.nowPlaying(window = Actions.window[windowPosition])
+                }
             }
-        }
 
-        includeViralViewModel.getIncludeViralLiveData().observe(viewLifecycleOwner) { newSelection ->
+        includeViralViewModel.getIncludeViralLiveData()
+            .observe(viewLifecycleOwner) { newSelection ->
                 if (newSelection != includeViralViewModel.isViralSelected) {
                     includeViralViewModel.isViralSelected = newSelection
                     galleryViewModel.nowPlaying(showViral = newSelection)
                 }
 
-        }
+            }
     }
 
     private fun initAdapter(currentFilter: ViewType) {
@@ -193,6 +197,51 @@ class GalleryFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun showIncludeViralDialog() {
+        IncludeViralDialog().apply {
+            arguments = Bundle().apply {
+                putBoolean("checkedItem", includeViralViewModel.isViralSelected)
+            }
+        }.show(
+            childFragmentManager,
+            IncludeViralDialog::class.simpleName
+        )
+    }
+
+    private fun showChangeWindowDialog() {
+        ChangeWindowDialog().apply {
+            arguments = Bundle().apply {
+                putInt("position", changeWindowViewModel.selectedWindowPosition)
+            }
+        }.show(
+            childFragmentManager,
+            ChangeWindowDialog::class.simpleName
+        )
+    }
+
+    private fun showSortByDialog() {
+        SortByDialog().apply {
+            arguments = Bundle().apply {
+                putInt("position", sortByViewModel.selectedSortByPosition)
+            }
+        }.show(
+            childFragmentManager,
+            SortByDialog::class.simpleName
+        )
+    }
+
+    private fun showFilterSectionDialog() {
+        FilterSectionDialog().apply {
+            arguments = Bundle().apply {
+                putInt("position", filterSectionViewModel.selectedSectionPosition)
+
+            }
+        }.show(
+            childFragmentManager,
+            FilterSectionDialog::class.simpleName
+        )
     }
 
     override fun onResume() {

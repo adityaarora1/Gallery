@@ -5,13 +5,16 @@ import android.content.DialogInterface
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.activityViewModels
 
-class SortByDialog(private val viewModel: SortByViewModel) : DialogFragment() {
+class SortByDialog: DialogFragment() {
+    private val sortByViewModel: SortByViewModel by activityViewModels()
+
     private var positiveListener: DialogInterface.OnClickListener =
         DialogInterface.OnClickListener { dialog, which ->
             val alert: AlertDialog = dialog as AlertDialog
             val position: Int = alert.listView.checkedItemPosition
-            this.viewModel.setSortPositionLiveData(position)
+            sortByViewModel.setSortPositionLiveData(position)
         }
 
 

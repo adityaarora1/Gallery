@@ -54,7 +54,7 @@ dependencies {
     implementation "androidx.recyclerview:recyclerview:$versions.recyclerView"
     implementation "androidx.constraintlayout:constraintlayout:$versions.constraintLayout"
 
-    implementation "androidx.lifecycle:lifecycle-viewmodel:$versions.lifecycle"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$versions.lifecycle"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$versions.lifecycle"
     implementation "androidx.lifecycle:lifecycle-extensions:$versions.lifecycle"
 
@@ -66,7 +66,7 @@ dependencies {
     // Dependency Injection
     implementation "com.google.dagger:hilt-android:$versions.hilt"
     implementation "androidx.hilt:hilt-lifecycle-viewmodel:$versions.hiltViewModel"
-    implementation 'androidx.preference:preference:1.1.1'
+    implementation 'androidx.preference:preference-ktx:1.1.1'
     kapt "com.google.dagger:hilt-android-compiler:$versions.hilt"
     kapt "androidx.hilt:hilt-compiler:$versions.hiltViewModel"
 
